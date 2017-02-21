@@ -35,6 +35,7 @@ classdef QBSupervisor < simiam.controller.Supervisor
         d_prog
         
         p
+        pos
         
         v_max_w0            % QuickBot's max linear velocity when w=0
         w_max_v0            % QuickBot's max angular velocity when v=0
@@ -110,6 +111,8 @@ classdef QBSupervisor < simiam.controller.Supervisor
             %% END CODE BLOCK %%
                                     
             obj.p = simiam.util.Plotter();
+            obj.pos = simiam.util.PositionPlotter(); 
+            
             obj.current_controller.p = obj.p;
             
             obj.d_prog = 10;

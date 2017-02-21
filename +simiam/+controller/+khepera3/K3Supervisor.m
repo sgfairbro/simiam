@@ -33,6 +33,7 @@ classdef K3Supervisor < simiam.controller.Supervisor
         d_unsafe
         d_prog
         p
+        pos
 
         
         direction
@@ -105,6 +106,8 @@ classdef K3Supervisor < simiam.controller.Supervisor
             obj.d_prog = 10;
             
             obj.p = simiam.util.Plotter();
+            obj.pos = simiam.util.PositionPlotter(); 
+            
             obj.current_controller.p = obj.p;
         end
         

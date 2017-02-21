@@ -33,6 +33,10 @@ classdef PositionPlotter < handle
             
             figure;
             obj.a = axes;
+            obj.a = axes;
+            ax = gca; 
+            ax.Title.String = 'Position Plot'; 
+            
             set(obj.a, 'NextPlot', 'add');
             hold(obj.a, 'all');
             obj.t = 0;
