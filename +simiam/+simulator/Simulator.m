@@ -25,6 +25,8 @@ classdef Simulator < handle
         world           % A virtual world for the simulator
         physics
         
+        positionPlotter
+        
         origin
     end
     
