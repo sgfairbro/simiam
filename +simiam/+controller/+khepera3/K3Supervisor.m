@@ -442,6 +442,9 @@ classdef K3Supervisor < simiam.controller.Supervisor
             
             % Update your estimate of (x,y,theta)
             obj.state_estimate.set_pose([x_new, y_new, theta_new]);
+            
+            % Update the position plot
+            obj.pos.plot_pos(x_new, y_new, theta_dt); 
         end
     end
 end

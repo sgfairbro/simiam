@@ -435,6 +435,9 @@ classdef QBSupervisor < simiam.controller.Supervisor
             
             % Update your estimate of (x,y,theta)
             obj.state_estimate.set_pose([x_new, y_new, atan2(sin(theta_new), cos(theta_new))]);
+            
+            % Update the position plot
+            obj.pos.plot_pos(x_new, y_new, theta_dt); 
         end
         
         %% Utility functions

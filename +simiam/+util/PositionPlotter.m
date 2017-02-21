@@ -33,7 +33,6 @@ classdef PositionPlotter < handle
             
             figure;
             obj.a = axes;
-            obj.a = axes;
             ax = gca; 
             ax.Title.String = 'Position Plot'; 
             
@@ -42,14 +41,11 @@ classdef PositionPlotter < handle
             obj.t = 0;
         end
         
-        function plot_pos(obj, dt, y, x, color)
+        function plot_pos(obj, dt, y, x)
         %% PLOT_pos Plots a robot's position
-        %   [h,g] = plot_2d_ref(obj, h, g, x, y, r) plots the output signal
-        %   (y) and reference signal (r) versus time (t).
         
             if ~ishandle(obj.h)
-                obj.h = plot(obj.a, x, y, 'b');
-                set(obj.g, 'Color', color);
+                obj.h = plot(obj.a, x, y, 'b', 'LineStyle', 'none', 'Marker', '*');
                 obj.x = obj.x(end);
                 obj.y = obj.y(end);
             end
