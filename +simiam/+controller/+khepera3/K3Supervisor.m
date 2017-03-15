@@ -140,7 +140,7 @@ classdef K3Supervisor < simiam.controller.Supervisor
 %             end
 %             
             if (obj.check_event('at_goal'))
-                obj.switch_to_state('stop');
+                %obj.switch_to_state('stop');
 
 %                 [x,y,theta] = obj.state_estimate.unpack();
 %                 fprintf('stopped at (%0.3f,%0.3f)\n', x, y);
