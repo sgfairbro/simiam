@@ -5,8 +5,10 @@ classdef KheperaSquareApp < handle
     
     properties
         supervisors
+        initialized
         root
-        square_iter
+        follower1_iter
+        follower2_iter
         side
         square_x_array
         square_y_array
@@ -15,20 +17,38 @@ classdef KheperaSquareApp < handle
     methods
         function obj = KheperaSquareApp(root)
             obj.supervisors = simiam.containers.ArrayList(3);
+            obj.initialized = false; 
             obj.root = root;
-            obj.square_iter = 1; 
-            obj.side
+            obj.follower1_iter = 1;
+            obj.follower2_iter = 1;
+            obj.side = 0.3;
             obj.square_x_array = [obj.side; 0; -obj.side; 0]; 
             obj.square_y_array = [0; obj.side; 0; -obj.side]; 
+        
             
         end
         
         function run(obj, dt)
+            
             aFollowerRobot1 = obj.supervisors.elementAt(2);
             aFollowerRobot2 = obj.supervisors.elementAt(3); 
             
-%             [xf, yf, thetaf] = aFollowerRobot1.state_estimate.unpack();
-%             [xf2, yf2, thetaf2] = aFollowerRobot2.state_estimate.unpack(); 
+            if ~obj.initialized
+                [xf, yf, ~] = aFollowerRobot1.state_estimate.unpack();
+                [xf2, yf2, ~] = aFollowerRobot2.state_estimate.unpack();
+                
+                fprintf('follower1 position: (%0.3f,%0.3f)\n', xf, yf);
+                %fprintf('follower2 position: (%0.3f,%0.3f)\n', xf2, yf2);
+                
+                aFollowerRobot1.goal = [xf +obj.square_x_array(obj.follower1_iter)*obj.side, yf +obj.square_y_array(obj.follower1_iter)*obj.side];  
+                aFollowerRobot2.goal = [xf2 +obj.square_x_array(obj.follower2_iter)*obj.side, yf2 +obj.square_y_array(obj.follower2_iter)*obj.side]; 
+                
+                obj.follower1_iter = obj.follower1_iter + 1; 
+                obj.follower2_iter = obj.follower2_iter + 1;
+                obj.initialized = true; 
+            end
+            
+ 
 %             
 %             u = [xf-x; yf-y];
 %             u2 = [xf2 - x; yf2 - y]; 
@@ -42,11 +62,33 @@ classdef KheperaSquareApp < handle
 %             y_n = y+0.25*sin(theta_d);
 %             y_n2 = y+0.25*sin(theta_d2); 
 %             
-%             aFollower1 = obj.supervisors.elementAt(2);
-%             aFollower2 = obj.supervisors.elementAt(3);
 %             
-%             aFollower1.goal = [x_n; y_n];
-%             aFollower2.goal = [x_n2;y_n2]; 
+
+            if aFollowerRobot1.at_goal
+                [xf, yf, ~] = aFollowerRobot1.state_estimate.unpack();
+                aFollowerRobot1.goal = [xf +obj.square_x_array(obj.follower1_iter)*obj.side, yf +obj.square_y_array(obj.follower1_iter)*obj.side];
+              
+                fprintf('follower1 position: (%0.3f,%0.3f)\n', xf, yf);
+                
+                if isequal(obj.follower1_iter, 4)
+                    obj.follower1_iter = 1;
+                else
+                    obj.follower1_iter = obj.follower1_iter + 1; 
+                end
+            end
+            if aFollowerRobot2.at_goal
+                [xf2, yf2, ~] = aFollowerRobot2.state_estimate.unpack();  
+                aFollowerRobot2.goal = [xf2 +obj.square_x_array(obj.follower2_iter)*obj.side, yf2 +obj.square_y_array(obj.follower2_iter)*obj.side]; 
+                
+                %fprintf('follower2 position: (%0.3f,%0.3f)\n', xf2, yf2);
+                
+                if isequal(obj.follower2_iter, 4)
+                    obj.follower2_iter = 1;
+                else
+                    %obj.follower2_iter = obj.follower2_iter + 1;
+                end
+            end
+            
         end
         
         function ui_press_mouse(obj, click_src)
